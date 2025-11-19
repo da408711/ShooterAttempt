@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -7,6 +8,7 @@ public class PlayerController : MonoBehaviour
 
     public int lives;
     private float speed;
+    private ScoreManager scoreManager;
 
     private GameManager gameManager;
 
@@ -19,6 +21,8 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        scoreManager = FindObjectOfType<ScoreManager>();
+
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         lives = 3;
         speed = 5.0f;
@@ -47,7 +51,7 @@ public class PlayerController : MonoBehaviour
 
     void Shooting()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Instantiate(bulletPrefab, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
         }
@@ -71,6 +75,22 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, transform.position.y * -1, 0);
         }
+    }
 
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        switch (collision.name)
+        {
+            case "Circle":
+                ScoreManager.scoreAmount += 1;
+                Destroy(collision.gameObject);
+                break;
+            case "Circle(1)":
+                ScoreManager.scoreAmount += 2;
+                Destroy(collision.gameObject);
+                break;
+        }
     }
 }
+

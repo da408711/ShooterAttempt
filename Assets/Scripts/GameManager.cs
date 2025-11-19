@@ -57,4 +57,13 @@ public class GameManager : MonoBehaviour
     {
         livesText.text = "Lives: " + currentLives;
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Coin"))
+        {
+
+        }
+        
+    }
 }
